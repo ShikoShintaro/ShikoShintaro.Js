@@ -1,0 +1,43 @@
+{
+  "name": "shikodiscord",
+  "version": "2.0.0",
+  "description": "",
+  "main": "shiko-main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node shiko-main.js"
+  },
+  "keywords": [
+    "shiko",
+    "shikoBOT"
+  ],
+  "author": "Shiko Shintaro",
+  "license": "MIT",
+  "dependencies": {
+    "akaneko": "^5.2.3",
+    "ascii-table": "^0.0.9",
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "formidable": "^3.2.5",
+    "fs": "^0.0.1-security",
+    "hmtai": "^3.2.2",
+    "mongodb": "^4.17.1",
+    "mongoose": "^6.11.1",
+    "node-osu": "^2.2.1",
+    "nodesu": "^0.7.3",
+    "osu-api-extended": "^2.5.12",
+    "request": "^2.88.2"
+  },
+  "engines": {
+    "node": "^21.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShikoShintaro/ShikoDiscord.Js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ShikoShintaro/ShikoDiscord.Js/issues"
+  },
+  "homepage": "https://github.com/ShikoShintaro/ShikoDiscord.Js#readme"
+}
