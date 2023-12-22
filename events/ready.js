@@ -1,6 +1,9 @@
 const { ActivityType } = require("discord.js");
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
+
+const shiko = require('../config/mongo')
 
 const { Events } = require('discord.js');
 
@@ -75,6 +78,14 @@ module.exports = {
         } catch (error) {
             console.error(error);
         }
+
+        await shiko().then(mongodb => {
+            try {
+                console.log('Im connected to the database master');
+            } catch (err) {
+                console.log(err)
+            }
+        })
 
         console.log(`"Ready Mastah", Logged in as ${client.user.tag}`);
 

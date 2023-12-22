@@ -258,6 +258,9 @@ module.exports = {
                     cd.add(interaction.user.id);
                     correct = true;
 
+                    const level = interaction.options.getInteger('level')
+                    const userId = interaction.user.id
+
                     const timeDiff = Date.now() - msg.createdTimestamp;
                     const ans1 = new ME()
                         .setTitle('Yey you got the answer~')
@@ -269,6 +272,9 @@ module.exports = {
                     interaction.editReply({ embeds: [ans1] })
 
                     cd.delete(interaction.user.id);
+
+
+                    
                 })
 
                 collector.once('end', () => {
