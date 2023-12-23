@@ -1,4 +1,4 @@
-const { ActivityType } = require("discord.js");
+const { ActivityType, Routes, REST } = require("discord.js");
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const shiko = require('../config/mongo')
 
 const { Events } = require('discord.js');
+const token = process.env.token
+const clientId = process.env.guildId
 
 module.exports = {
     name: Events.ClientReady,
@@ -70,14 +72,37 @@ module.exports = {
             }
         }
 
-        try {
-            console.log(`Started registering ${loadedcommands} application (/) commands.`);
-            // Register the commands for the specific guild
-            client.guilds.cache.get(guildId)?.commands.set(commands);
-            console.log(`Successfully ${commands.length} registered application (/) commands for the guild.`);
-        } catch (error) {
-            console.error(error);
-        }
+
+        //for global release
+
+        const rest = new REST({ version: '10' }).setToken(token);
+
+        (async () => {
+            try {
+                console.log(`Started registering ${commands.length} global (/) commands.`);
+
+                // Register the commands globally
+                await rest.put(
+                    Routes.applicationGuildCommands(clientId, guildId),
+                    { body: commands },
+                );
+
+                console.log(`Successfully registered ${commands.length} global (/) commands.`);
+            } catch (error) {
+                console.error(error);
+            }
+        })
+
+        //for testing commands
+
+        // try {
+        //     console.log(`Started registering ${loadedcommands} application (/) commands.`);
+        //     // Register the commands for the specific guild
+        //     client.guilds.cache.get(guildId)?.commands.set(commands);
+        //     console.log(`Successfully ${commands.length} registered application (/) commands for the guild.`);
+        // } catch (error) {
+        //     console.error(error);
+        // }
 
         await shiko().then(mongodb => {
             try {

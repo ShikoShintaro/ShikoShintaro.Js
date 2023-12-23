@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('avatar')
         .setDescription('Gets usr avatar')
-        .addStringOption(option => option.setName('user')
+        .addUserOption(option => option.setName('user')
             .setDescription('The user to get the avatar of')
             .setRequired(false)),
     async execute(interaction) {
@@ -17,11 +17,11 @@ module.exports = {
 
         await interaction.reply({ embeds: [embed] });
 
-        const user = interaction.mentions.users.first() || interaction.user || client.users.cache.get(args[0]);
+        const user = interaction.options.getUser('user')
         const avatar = user.displayAvatarURL({ size: 4096, dynamic: true })
 
         const embed1 = new EmbedBuilder()
-            .setTitle('${user.username}\'s Avatar')
+            .setTitle(`${user.username}\'s Avatar`)
             .setImage(avatar)
             .setColor("Random")
             .setTimestamp()

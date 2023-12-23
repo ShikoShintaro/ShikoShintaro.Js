@@ -131,7 +131,7 @@ module.exports = {
                     if (selectedAnswer === randomQuestion.correctAnswer) {
                         const embed2 = new ME()
                             .setTitle('You Got The Correct Answer')
-                            .setDescription(`Congratulations! You chose the correct answer: ${selectedAnswer}`)
+                            .setDescription(`**\`\`\`Congratulations! 🎉 You chose the correct answer: ${selectedAnswer}\`\`\`**`)
                             .setColor('Random')
                             .setTimestamp()
                             .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
@@ -183,7 +183,7 @@ module.exports = {
                     } else {
                         const embed3 = new ME()
                             .setTitle('You Got The Wrong Answer')
-                            .setDescription(`Oops! You chose the incorrect answer. The correct answer is: ${randomQuestion.correctAnswer}`)
+                            .setDescription(`**\`\`\`❌ Oops! You chose the incorrect answer. The correct answer is : ${randomQuestion.correctAnswer}\`\`\`**`)
                             .setColor('Random')
                             .setTimestamp()
                             .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
