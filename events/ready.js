@@ -6,8 +6,8 @@ const mongoose = require('mongoose');
 const shiko = require('../config/mongo')
 
 const { Events } = require('discord.js');
-const token = process.env.token
-const clientId = process.env.guildId
+const token = process.env.TOKEN
+const clientId = process.env.clientId
 
 module.exports = {
     name: Events.ClientReady,
@@ -83,15 +83,15 @@ module.exports = {
 
                 // Register the commands globally
                 await rest.put(
-                    Routes.applicationGuildCommands(clientId, guildId),
+                    Routes.applicationCommands(clientId),
                     { body: commands },
                 );
 
                 console.log(`Successfully registered ${commands.length} global (/) commands.`);
             } catch (error) {
-                console.error(error);
+                console.error('Error during registration:', error);
             }
-        })
+        })();
 
         //for testing commands
 
