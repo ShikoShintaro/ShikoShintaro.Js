@@ -4,7 +4,10 @@ const MS = require('../../schemas/mathscores')
 const TS = require('../../schemas/scores')
 const ME = EmbedBuilder;
 
-const canvas1 = require('@napi-rs/canvas')
+const Canva = require('@napi-rs/canvas');
+const path = require('path');
+
+const rp = path.resolve(__dirname, '../../../../files/images/background/anime2.jpg');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -38,30 +41,57 @@ module.exports = {
         switch (typeOption.value) {
             case 'Overall profile':
                 if (user) {
-                    const userID = user.id
+                    const usrava = interaction.options.getUser('user');
+                    const canvas = Canva.createCanvas(1920, 600);
 
-                    const userProfile = await MS.findOne({ userID })
+                    const ctx = canvas.getContext('2d');
 
-                    const userProf = await TS.findOne({ userID })
+                    const bg = await Canva.loadImage(rp);
 
-                    // const canvas = canvas1.createCanvas(700, 250);
-                    // const xtx = canvas.getContext('2d')
+                    ctx.filter = 'blur(5px)';
+                    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+                    ctx.filter = 'none';
 
-                    // const bg = await canvas1.loadImage('../../../pfbg/test.png')
+                    ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-                    // xtx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+                    const avatar = await Canva.loadImage(usrava.displayAvatarURL({ extension: 'jpg' }));
 
-                    // const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
+                    const tbBorderSize = 5; // Adjust border size for larger space
+                    const avatarRadius = 100; // Adjust the avatar circle radius
+                    const spaceBetweenAvatarAndText = 20; // Adjust the space between the avatar and text
+
+                    ctx.globalAlpha = 0.7; // Adjust transparency level
+                    ctx.strokeStyle = '#ffffff'; // Border color
+                    ctx.lineWidth = tbBorderSize;
+
+                    // Calculate the coordinates to cover the entire profile area
+                    const profileX = 50 - tbBorderSize;
+                    const profileY = 50 - tbBorderSize;
+                    const profileWidth = 1820 + 2 * tbBorderSize;
+                    const profileHeight = 520 + 2 * tbBorderSize;
+
+                    // Draw the border with larger space
+                    ctx.strokeRect(profileX, profileY, profileWidth, profileHeight);
+
+                    // Draw the circular avatar with a border
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(150, 150, avatarRadius + tbBorderSize, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.closePath();
+                    ctx.clip();
+                    ctx.drawImage(avatar, 50, 50, 2 * avatarRadius, 2 * avatarRadius);
+                    ctx.restore();
+                    ctx.font = '30px Arial';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(`${usrava.username}'s Profile`, 290, 150);
+
+                    ctx.globalAlpha = 1.0;
 
 
-                    // await interaction.reply(
-                    //     {
-                    //         files: [attachment]
-                    //     }
-                    // )
+                    const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
 
-
-
+                    interaction.editReply({ files: [attachment], embeds: [] })
                     //     if (userProfile) {
 
                     //         let formattedProfile =
