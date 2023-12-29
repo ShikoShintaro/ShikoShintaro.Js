@@ -7,7 +7,7 @@ const ME = EmbedBuilder;
 const Canva = require('@napi-rs/canvas');
 const path = require('path');
 
-const rp = path.resolve(__dirname, '../../../../files/images/background/anime2.jpg');
+const rp = path.resolve(__dirname, '../../../../files/images/background/anime1.jpg');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -48,7 +48,7 @@ module.exports = {
 
                     const bg = await Canva.loadImage(rp);
 
-                    ctx.filter = 'blur(5px)';
+                    ctx.filter = 'blur(0px)';
                     ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
                     ctx.filter = 'none';
 
@@ -56,19 +56,22 @@ module.exports = {
 
                     const avatar = await Canva.loadImage(usrava.displayAvatarURL({ extension: 'jpg' }));
 
-                    const tbBorderSize = 5; // Adjust border size for larger space
-                    const avatarRadius = 100; // Adjust the avatar circle radius
-                    const spaceBetweenAvatarAndText = 20; // Adjust the space between the avatar and text
 
-                    ctx.globalAlpha = 0.7; // Adjust transparency level
-                    ctx.strokeStyle = '#ffffff'; // Border color
-                    ctx.lineWidth = tbBorderSize;
+                    const tbBorderSize = 5; 
+                    const avatarRadius = 100;
+                    const spaceBetweenAvatarAndText = 20; 
 
-                    // Calculate the coordinates to cover the entire profile area
                     const profileX = 50 - tbBorderSize;
                     const profileY = 50 - tbBorderSize;
                     const profileWidth = 1820 + 2 * tbBorderSize;
                     const profileHeight = 520 + 2 * tbBorderSize;
+
+                    ctx.globalAlpha = 1 // Adjust transparency level
+                    ctx.fillStyle = 'rgba(169, 169, 169, 0.5)';
+                    ctx.fillRect(profileX, profileY, profileWidth, profileHeight);
+
+                    ctx.strokeStyle = '#ffffff'; // Border color
+                    ctx.lineWidth = tbBorderSize;
 
                     // Draw the border with larger space
                     ctx.strokeRect(profileX, profileY, profileWidth, profileHeight);
