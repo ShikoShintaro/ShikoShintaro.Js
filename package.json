@@ -26,10 +26,12 @@
     "hmtai": "^3.2.2",
     "mongodb": "^4.17.1",
     "mongoose": "^6.11.1",
+    "node-fetch": "^3.3.2",
     "node-osu": "^2.2.1",
     "nodesu": "^0.7.3",
     "osu-api-extended": "^2.5.12",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "undici": "^6.2.1"
   },
   "engines": {
     "node": "^21.1.0"

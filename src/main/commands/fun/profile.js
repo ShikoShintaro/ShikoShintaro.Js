@@ -41,7 +41,9 @@ module.exports = {
         switch (typeOption.value) {
             case 'Overall profile':
                 if (user) {
-                    const usrava = interaction.options.getUser('user');
+
+                    const user = interaction.options.getUser('user');
+
                     const canvas = Canva.createCanvas(1920, 600);
 
                     const ctx = canvas.getContext('2d');
@@ -54,84 +56,141 @@ module.exports = {
 
                     ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
-                    const avatar = await Canva.loadImage(usrava.displayAvatarURL({ extension: 'jpg' }));
+                    const avatar = await Canva.loadImage(user.displayAvatarURL({ extension: 'jpg' }));
 
 
-                    const tbBorderSize = 5; 
-                    const avatarRadius = 100;
-                    const spaceBetweenAvatarAndText = 20; 
+                    const tbBorderSize = 5;
+                    const avatarRadius = 90;
+                    const spaceBetweenAvatarAndText = 20;
 
-                    const profileX = 50 - tbBorderSize;
-                    const profileY = 50 - tbBorderSize;
+                    const profileX = 54;
+                    const profileY = 53;
                     const profileWidth = 1820 + 2 * tbBorderSize;
                     const profileHeight = 520 + 2 * tbBorderSize;
 
                     ctx.globalAlpha = 1 // Adjust transparency level
-                    ctx.fillStyle = 'rgba(169, 169, 169, 0.5)';
+                    ctx.fillStyle = 'rgba(169, 169, 169, 0.7)'; //RGB COLOR Alpha function
                     ctx.fillRect(profileX, profileY, profileWidth, profileHeight);
-
                     ctx.strokeStyle = '#ffffff'; // Border color
                     ctx.lineWidth = tbBorderSize;
 
                     // Draw the border with larger space
                     ctx.strokeRect(profileX, profileY, profileWidth, profileHeight);
 
+                    const avatarX = profileX + tbBorderSize + 10;
+                    const avatarY = profileY + tbBorderSize + 10;
+
                     // Draw the circular avatar with a border
                     ctx.save();
                     ctx.beginPath();
-                    ctx.arc(150, 150, avatarRadius + tbBorderSize, 0, Math.PI * 2);
+                    ctx.arc(avatarX + avatarRadius, avatarY + avatarRadius, avatarRadius + tbBorderSize, 0, Math.PI * 2);
                     ctx.stroke();
                     ctx.closePath();
                     ctx.clip();
-                    ctx.drawImage(avatar, 50, 50, 2 * avatarRadius, 2 * avatarRadius);
+                    ctx.drawImage(avatar, avatarX, avatarY, 2 * avatarRadius + 2 * tbBorderSize, 2 * avatarRadius + 2 * tbBorderSize);
                     ctx.restore();
-                    ctx.font = '30px Arial';
+
+
+                    //user profile
+                    ctx.font = '40px Monsterrat';
                     ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`${usrava.username}'s Profile`, 290, 150);
+                    ctx.fillText(`${user.username}`, 290, 170);
 
-                    ctx.globalAlpha = 1.0;
 
+                    //the math
+                    ctx.font = '33px Poppins';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(`Math Game`, 320, 225);
+
+                    ctx.font = '30px Poppins';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(`Total Equations :`, 350, 275);
+
+                    ctx.font = '30px Poppins';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(`Total Answered :`, 930, 275);
+
+
+
+                    if (user) {
+                        const userID = user.id
+
+                        const usr = await MS.findOne({ userID })
+
+                        if (usr) {
+                            const totalequationsValue = usr.totalequations
+                            const totalquestionValue = usr.totalanswered
+
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`${totalequationsValue}`, 620, 275)
+
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`${totalquestionValue}`, 1210, 275)
+
+                        } else {
+
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`User not played yet`, 620, 275)
+
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`User not played yet`, 1210, 275)
+
+                        }
+                    } else {
+                        console.log('NO user found')
+                    }
+
+                    ctx.font = '33px Poppins';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(`Trivia Game`, 320, 330);
+
+                    ctx.font = '30px Poppins';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(`Total Questions :`, 350, 380);
+
+                    ctx.font = '30px Poppins';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(`Total Answered :`, 930, 380);
+
+                    if (user) {
+                        const userId = user.id
+
+                        const usr1 = await TS.findOne({ userId })
+
+                        if (usr1) {
+                            const totalquesValue = usr1.totalquestions
+                            const totalansweredValue = usr1.totalanswered
+
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`${totalquesValue}`, 620, 380)
+
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`${totalansweredValue}`, 1210, 380)
+
+                        } else {
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`User not played yet`, 620, 380)
+
+                            ctx.font = '27px Poppins';
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText(`User not played yet`, 1210, 380)
+                        }
+
+
+                    } else {
+                        console.log('user not found in the database')
+                    }
 
                     const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
 
                     interaction.editReply({ files: [attachment], embeds: [] })
-                    //     if (userProfile) {
-
-                    //         let formattedProfile =
-                    //             `**Total Equations :** ${userProfile.totalequations}\n`
-                    //             + `**Total Answered :** ${userProfile.totalanswered}\n`
-
-                    //             // for (let i = 1; i <= 10; i++) {
-                    //             //     const levelkey = `lvl${i}`
-                    //             //     if (userProfile[levelkey] !== undefined) {
-                    //             //         formattedProfile += `**Level ${i} answered :** ${userProfile[levelkey]}\n`
-                    //             //     } else {
-                    //             //         formattedProfile += `**Level ${i} answered :** Not Answered\n`
-                    //             //     }
-                    //             // }
-
-                    //         let formattedProf = 
-                    //             `**Total Questions :** ${userProf.totalquestions}\n`
-                    //             + `**Total Answered :** ${userProf.correctAnswers}\n`
-
-                    //         const embed2 = new ME()
-                    //             .setTitle(`${user.username}\'s Profile`)
-                    //             .addFields(
-                    //                 {
-                    //                     name : "Math Profile",
-                    //                     value : formattedProfile
-                    //                 },
-                    //                 {
-                    //                     name : "Trivia Profile",
-                    //                     value : formattedProf
-                    //                 }
-                    //             )
-                    //             .setColor("Random")
-                    //             .setTimestamp()
-                    //             .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
-
-                    //         interaction.editReply({ embeds: [embed2] })
-                    //     }
                 }
                 break;
         }
