@@ -163,7 +163,7 @@ module.exports = {
 
                         if (usr1) {
                             const totalquesValue = usr1.totalquestions
-                            const totalansweredValue = usr1.totalanswered
+                            const totalansweredValue = usr1.correctAnswers
 
                             ctx.font = '27px Poppins';
                             ctx.fillStyle = '#ffffff';
