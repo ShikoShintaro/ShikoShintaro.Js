@@ -91,24 +91,31 @@ module.exports = {
                     ctx.restore();
 
 
+                    function fillText1(ctx, text, fontSize, fontFamily, x, y) {
+                        ctx.font = `${fontSize} ${fontFamily}`
+                        ctx.fillStyle = '#ffffff'
+                        ctx.fillText(text, x, y);
+                    }
+
                     //user profile
-                    ctx.font = '40px Monsterrat';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`${user.username}`, 290, 170);
+                    const font = '40px'; //username font size
+                    const style = 'DejaVu Sans Mono'; //global fontFamily
 
+                    //for the categories 
+                    const font1 = '33px';
+                    const font2 = '30px';
 
+                    //for the sub categories;
+                    const font3 = '25px'
+
+                    fillText1(ctx, `${user.username}`, font, style, 290, 170);
+    
                     //the math
-                    ctx.font = '33px Poppins';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`Math Game`, 320, 225);
+                    fillText1(ctx, 'Math Game', font1, style, 320, 225);
 
-                    ctx.font = '30px Poppins';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`Total Equations :`, 350, 275);
+                    fillText1(ctx, `Total Equations :`, font2, style, 350, 275);
 
-                    ctx.font = '30px Poppins';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`Total Answered :`, 930, 275);
+                    fillText1(ctx, `Total Answered :`, font2, style, 990, 275);
 
 
 
@@ -121,40 +128,26 @@ module.exports = {
                             const totalequationsValue = usr.totalequations
                             const totalquestionValue = usr.totalanswered
 
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`${totalequationsValue}`, 620, 275)
+                            fillText1(ctx, `${totalequationsValue}`, font3, style, 680, 275)
 
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`${totalquestionValue}`, 1210, 275)
+                            fillText1(ctx, `${totalquestionValue}`, font3, style, 1300, 275)
 
                         } else {
 
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`User not played yet`, 620, 275)
+                            fillText1(ctx, `User not played yet`, font3, style, 680, 275)
 
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`User not played yet`, 1210, 275)
+                            fillText1(ctx, `User not played yet`, font3, style, 1300, 275)
 
                         }
                     } else {
                         console.log('NO user found')
                     }
 
-                    ctx.font = '33px Poppins';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`Trivia Game`, 320, 330);
+                    fillText1(ctx, `Trivia Game`, font1, style, 320, 330);
 
-                    ctx.font = '30px Poppins';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`Total Questions :`, 350, 380);
+                    fillText1(ctx, `Total Questions :`, font2, style, 350, 380);
 
-                    ctx.font = '30px Poppins';
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText(`Total Answered :`, 930, 380);
+                    fillText1(ctx, `Total Answered :`, font2, style, 990, 380);
 
                     if (user) {
                         const userId = user.id
@@ -165,22 +158,14 @@ module.exports = {
                             const totalquesValue = usr1.totalquestions
                             const totalansweredValue = usr1.correctAnswers
 
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`${totalquesValue}`, 620, 380)
+                            fillText1(ctx, `${totalquesValue}`, font3, style, 680, 380)
 
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`${totalansweredValue}`, 1210, 380)
+                            fillText1(ctx, `${totalansweredValue}`,font3, style, 1300, 380)
 
                         } else {
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`User not played yet`, 620, 380)
-
-                            ctx.font = '27px Poppins';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.fillText(`User not played yet`, 1210, 380)
+                            fillText1(ctx, `User not played yet`, font3, style, 680, 380)
+                            
+                            fillText1(ctx, `User not played yet`, font3, style, 1300, 380)
                         }
 
 
@@ -188,10 +173,18 @@ module.exports = {
                         console.log('user not found in the database')
                     }
 
+
+
                     const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
 
                     interaction.editReply({ files: [attachment], embeds: [] })
                 }
+                break;
+
+
+            case "Math profile only":
+                console.log(Canva.GlobalFonts.families)
+
                 break;
         }
 
