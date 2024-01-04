@@ -1,6 +1,13 @@
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { readdirSync } = require("fs");
+const path = require('path');
 const client = require('../../shiko-main');
+
+const mainDir = path.resolve(__dirname, '..'); // Assuming your main file is in src/main
+const commandsDir = path.join(mainDir);
+
+console.log('mainDir:', mainDir);
+console.log('commandsDir:', commandsDir);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,15 +21,18 @@ module.exports = {
 
         if (!commandOption) {
             // Display a list of available commands
+
             let categories = [];
 
-            readdirSync("./commands/").forEach((dir) => {
-                const commands = readdirSync(`./commands/${dir}/`).filter((file) =>
-                    file.endsWith(".js")
-                );
+            readdirSync(commandsDir).forEach((dir) => {
+                const commandsDirPath = path.join(commandsDir, dir);
+                console.log('commandsDirPath:', commandsDirPath);
+
+                const commands = readdirSync(commandsDirPath).filter((file) => file.endsWith('.js'));
+                console.log('commands:', commands);
 
                 let cmds = commands.map((command) => {
-                    let commandFile = require(`../../commands/${dir}/${command}`);
+                    let commandFile = require(path.join(commandsDirPath, command));
 
                     if (!commandFile.data) return "*Awww~~ This Command is on Progress.*";
 
@@ -40,13 +50,15 @@ module.exports = {
                 categories.push(data);
             });
 
+            console.log(categories);
+
             const embed1 = new EmbedBuilder()
                 .setAuthor({ name: "Haro you need help?? These are my commands", iconURL: "https://i.imgur.com/uxcvoiI.gif" })
                 .addFields(categories)
                 .setDescription(
                     `Use \`/help\` followed by a command name to get more additional information on a command. For example: \`/help ban\`.`
                 )
-                .setFooter({ text: `Requested by ${interaction.user.id}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                .setFooter({ text: `Requested by ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
                 .setTimestamp()
                 .setColor("Random");
 
@@ -54,7 +66,7 @@ module.exports = {
 
         } else {
             const command = client.commands.get(commandOption.toLowerCase()) ||
-                            client.commands.find((c) => c.aliases && c.aliases.includes(commandOption.toLowerCase()));
+                client.commands.find((c) => c.aliases && c.aliases.includes(commandOption.toLowerCase()));
 
             if (!command) {
                 const embed2 = new EmbedBuilder()
