@@ -38,57 +38,60 @@ module.exports = {
 
         const user = interaction.options.getUser('user')
 
+        const canvas = Canva.createCanvas(1920, 600);
+
+        const ctx = canvas.getContext('2d');
+
+        const bg = await Canva.loadImage(rp);
+
+        ctx.filter = 'blur(0px)';
+        ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+        ctx.filter = 'none';
+
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+        const avatar = await Canva.loadImage(user.displayAvatarURL({ extension: 'jpg' }));
+
+
+        const tbBorderSize = 5;
+        const avatarRadius = 90;
+        const spaceBetweenAvatarAndText = 20;
+
+        const profileX = 54;
+        const profileY = 53;
+        const profileWidth = 1820 + 2 * tbBorderSize;
+        const profileHeight = 520 + 2 * tbBorderSize;
+
+        ctx.globalAlpha = 1 // Adjust transparency level
+        ctx.fillStyle = 'rgba(169, 169, 169, 0.7)'; //RGB COLOR Alpha function
+        ctx.fillRect(profileX, profileY, profileWidth, profileHeight);
+        ctx.strokeStyle = '#ffffff'; // Border color
+        ctx.lineWidth = tbBorderSize;
+
+        // Draw the border with larger space
+        ctx.strokeRect(profileX, profileY, profileWidth, profileHeight);
+
+        const avatarX = profileX + tbBorderSize + 10;
+        const avatarY = profileY + tbBorderSize + 10;
+
+        // Draw the circular avatar with a border
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(avatarX + avatarRadius, avatarY + avatarRadius, avatarRadius + tbBorderSize, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.clip();
+        ctx.drawImage(avatar, avatarX, avatarY, 2 * avatarRadius + 2 * tbBorderSize, 2 * avatarRadius + 2 * tbBorderSize);
+        ctx.restore();
+
+
         switch (typeOption.value) {
+
+
             case 'Overall profile':
                 if (user) {
 
                     const user = interaction.options.getUser('user');
-
-                    const canvas = Canva.createCanvas(1920, 600);
-
-                    const ctx = canvas.getContext('2d');
-
-                    const bg = await Canva.loadImage(rp);
-
-                    ctx.filter = 'blur(0px)';
-                    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-                    ctx.filter = 'none';
-
-                    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-                    const avatar = await Canva.loadImage(user.displayAvatarURL({ extension: 'jpg' }));
-
-
-                    const tbBorderSize = 5;
-                    const avatarRadius = 90;
-                    const spaceBetweenAvatarAndText = 20;
-
-                    const profileX = 54;
-                    const profileY = 53;
-                    const profileWidth = 1820 + 2 * tbBorderSize;
-                    const profileHeight = 520 + 2 * tbBorderSize;
-
-                    ctx.globalAlpha = 1 // Adjust transparency level
-                    ctx.fillStyle = 'rgba(169, 169, 169, 0.7)'; //RGB COLOR Alpha function
-                    ctx.fillRect(profileX, profileY, profileWidth, profileHeight);
-                    ctx.strokeStyle = '#ffffff'; // Border color
-                    ctx.lineWidth = tbBorderSize;
-
-                    // Draw the border with larger space
-                    ctx.strokeRect(profileX, profileY, profileWidth, profileHeight);
-
-                    const avatarX = profileX + tbBorderSize + 10;
-                    const avatarY = profileY + tbBorderSize + 10;
-
-                    // Draw the circular avatar with a border
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.arc(avatarX + avatarRadius, avatarY + avatarRadius, avatarRadius + tbBorderSize, 0, Math.PI * 2);
-                    ctx.stroke();
-                    ctx.closePath();
-                    ctx.clip();
-                    ctx.drawImage(avatar, avatarX, avatarY, 2 * avatarRadius + 2 * tbBorderSize, 2 * avatarRadius + 2 * tbBorderSize);
-                    ctx.restore();
 
 
                     function fillText1(ctx, text, fontSize, fontFamily, x, y) {
@@ -109,7 +112,7 @@ module.exports = {
                     const font3 = '25px'
 
                     fillText1(ctx, `${user.username}`, font, style, 290, 170);
-    
+
                     //the math
                     fillText1(ctx, 'Math Game', font1, style, 320, 225);
 
@@ -160,11 +163,11 @@ module.exports = {
 
                             fillText1(ctx, `${totalquesValue}`, font3, style, 680, 380)
 
-                            fillText1(ctx, `${totalansweredValue}`,font3, style, 1300, 380)
+                            fillText1(ctx, `${totalansweredValue}`, font3, style, 1300, 380)
 
                         } else {
                             fillText1(ctx, `User not played yet`, font3, style, 680, 380)
-                            
+
                             fillText1(ctx, `User not played yet`, font3, style, 1300, 380)
                         }
 
@@ -183,7 +186,11 @@ module.exports = {
 
 
             case "Math profile only":
-                console.log(Canva.GlobalFonts.families)
+
+
+                const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
+
+                interaction.editReply({ files: [attachment], embeds: [] })
 
                 break;
         }
