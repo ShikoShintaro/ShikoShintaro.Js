@@ -84,6 +84,7 @@ module.exports = {
         ctx.drawImage(avatar, avatarX, avatarY, 2 * avatarRadius + 2 * tbBorderSize, 2 * avatarRadius + 2 * tbBorderSize);
         ctx.restore();
 
+        const style = 'DejaVu Sans Mono'; //global adjustment
 
         switch (typeOption.value) {
 
@@ -102,7 +103,6 @@ module.exports = {
 
                     //user profile
                     const font = '40px'; //username font size
-                    const style = 'DejaVu Sans Mono'; //global fontFamily
 
                     //for the categories 
                     const font1 = '33px';
@@ -187,17 +187,97 @@ module.exports = {
 
             case "Math profile only":
 
+                if (user) {
+                    const user = interaction.options.getUser('user');
+
+                    async function mathText(ctx, text, fontSize, fontFamily, x, y) {
+                        ctx.font = `${fontSize} ${fontFamily}`;
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillText(text, x, y);
+                    }
+
+                    async function mathLevelText(ctx, level, fontSize, fontFamily, x, y, usr) {
+                        ctx.font = `${fontSize} ${fontFamily}`;
+                        ctx.fillStyle = '#ffffff'; // Default color
+
+                        const levelKey = `lvl${level}`;
+                        const levelValue = usr && usr[levelKey] !== undefined ? usr[levelKey] : 'Not answered';
+
+                        // Customize styling for levels that haven't been answered
+                        if (levelValue === 'Not answered') {
+                            ctx.fillStyle = '#999999'; // Gray color for unanswered levels
+                        }
+
+                        // Draw the level information
+                        ctx.fillText(`Level ${level} : ${levelValue}`, x, y);
+
+                        // Reset fill style to default after drawing each level
+                        ctx.fillStyle = '#ffffff';
+                    }
+
+                    // Math size profile
+                    const fontSize = '40px';
+
+                    // For categories
+                    const font1 = '33px';
+                    const font2 = '30px';
+                    const font3 = '25px';
+
+                    await mathText(ctx, `${user?.username}`, fontSize, style, 290, 170);
+
+                    await mathText(ctx, 'Math Game Profile', font1, style, 320, 225);
+
+                    await mathText(ctx, `Total Equations :`, font2, style, 350, 275);
+
+                    await mathText(ctx, `Total Answered :`, font2, style, 990, 275);
+
+                    if (user) {
+                        const userID = user.id;
+                        const usr = await MS.findOne({ userID });
+
+                        if (usr) {
+                            const totalanswered = usr.totalanswered
+                            const totalequations = usr.totalequations
+
+                            await mathText(ctx, `${totalequations}`, font2, style, 670, 275)
+                            await mathText(ctx, `${totalanswered}`, font2, style, 1290, 275)
+
+                        }
+
+                        // Check if usr is defined before using it
+                        if (usr) {
+                            await mathLevelText(ctx, '1', '20px', 'Arial', 350, 325, usr);
+                            await mathLevelText(ctx, '2', '20px', 'Arial', 350, 375, usr);
+                            await mathLevelText(ctx, '3', '20px', 'Arial', 350, 425, usr);
+                            await mathLevelText(ctx, '4', '20px', 'Arail', 350, 475, usr);
+                            await mathLevelText(ctx, '5', '20px', 'Arail', 350, 525, usr);
+                            await mathLevelText(ctx, '6', '20px', 'Arail', 990, 325, usr);
+                            await mathLevelText(ctx, '7', '20px', 'Arail', 990, 375, usr);
+                            await mathLevelText(ctx, '8', '20px', 'Arail', 990, 425, usr);
+                            await mathLevelText(ctx, '9', '20px', 'Arail', 990, 475, usr);
+                            await mathLevelText(ctx, '10', '20px', 'Arail', 990, 525, usr);
+                            // Add more level mentions as needed
+                        }
+                    }
+                }
+
+
 
                 const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
 
                 interaction.editReply({ files: [attachment], embeds: [] })
 
                 break;
+
+            case "Trivia Profile" :
+
+            
+
+                break;
         }
-
-
-
 
     }
 
+
 }
+
