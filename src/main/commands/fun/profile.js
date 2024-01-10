@@ -271,7 +271,7 @@ module.exports = {
 
             case "Trivia Profile" :
 
-            
+                //coming soon! 
 
                 break;
         }
