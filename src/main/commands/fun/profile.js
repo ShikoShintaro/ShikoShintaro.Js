@@ -44,7 +44,7 @@ module.exports = {
 
         const bg = await Canva.loadImage(rp);
 
-        ctx.filter = 'blur(0px)';
+        ctx.filter = 'blur(5px)';
         ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
         ctx.filter = 'none';
 
@@ -63,7 +63,7 @@ module.exports = {
         const profileHeight = 520 + 2 * tbBorderSize;
 
         ctx.globalAlpha = 1 // Adjust transparency level
-        ctx.fillStyle = 'rgba(169, 169, 169, 0.7)'; //RGB COLOR Alpha function
+        ctx.fillStyle = 'rgba(169, 169, 169, 0.8)'; //RGB COLOR Alpha function
         ctx.fillRect(profileX, profileY, profileWidth, profileHeight);
         ctx.strokeStyle = '#ffffff'; // Border color
         ctx.lineWidth = tbBorderSize;
@@ -178,7 +178,7 @@ module.exports = {
 
 
 
-                    const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
+                    const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: `${user.username}.png` })
 
                     interaction.editReply({ files: [attachment], embeds: [] })
                 }
@@ -263,7 +263,7 @@ module.exports = {
 
 
 
-                const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'olok.png' })
+                const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: `${user.username}.png` })
 
                 interaction.editReply({ files: [attachment], embeds: [] })
 
@@ -271,7 +271,7 @@ module.exports = {
 
             case "Trivia Profile" :
 
-                //coming soon! 
+                //coming soon!
 
                 break;
         }
