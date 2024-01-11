@@ -50,8 +50,6 @@ module.exports = {
                 categories.push(data);
             });
 
-            console.log(categories);
-
             const embed1 = new EmbedBuilder()
                 .setAuthor({ name: "Haro you need help?? These are my commands", iconURL: "https://i.imgur.com/uxcvoiI.gif" })
                 .addFields(categories)
