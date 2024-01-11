@@ -23,10 +23,8 @@ module.exports = {
 
             readdirSync(commandsDir).forEach((dir) => {
                 const commandsDirPath = path.join(commandsDir, dir);
-                console.log('commandsDirPath:', commandsDirPath);
 
                 const commands = readdirSync(commandsDirPath).filter((file) => file.endsWith('.js'));
-                console.log('commands:', commands);
 
                 let cmds = commands.map((command) => {
                     let commandFile = require(path.join(commandsDirPath, command));
