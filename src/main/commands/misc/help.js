@@ -6,9 +6,6 @@ const client = require('../../shiko-main');
 const mainDir = path.resolve(__dirname, '..'); // Assuming your main file is in src/main
 const commandsDir = path.join(mainDir);
 
-console.log('mainDir:', mainDir);
-console.log('commandsDir:', commandsDir);
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
