@@ -2,21 +2,25 @@ const { Client, Message, DiscordAPIError, EmbedBuilder, Embed, SlashCommandBuild
 let cd = new Set()
 const client = require('../../shiko-main');
 const config = require('../../config/shiko.json');
-// const { parse } = require('dotenv/lib/main');
 const ME = EmbedBuilder
-const MS = require('../../schemas/mathscores')
 
-const {generateEquation} = require('../../../cores/games/math/mathsystem')
+//importing databases
+const MS = require('../../schemas/mathscores')
+const currency = require('../../schemas/usercurrency')
+
+//importing functions
+const { generateEquation } = require('../../../cores/games/math/mathsystem')
+const { playGame, getBalance } = require('../../../cores/games/currency/currencysystem')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('math')
         .setDescription('Perform a math operation. Usage: `/math <level> <operator_amount>`')
         .addIntegerOption(option => option.setName('level')
-            .setDescription('The level of the game')
+            .setDescription('The level of the game **up to 20**')
             .setRequired(true))
         .addIntegerOption(option => option.setName('operator_amount')
-            .setDescription('The amount of operators')
+            .setDescription('The amount of operators ** up to 10 **')
             .setRequired(true)),
     async execute(interaction, message, args) {
 
@@ -119,7 +123,9 @@ module.exports = {
                 correct = true;
 
                 const level = interaction.options.getInteger('level')
+                const operator_amount = interaction.options.getInteger('operator_amount')
                 const userID = interaction.user.id
+                const userName1 = interaction.user.username
 
                 const timeDiff = Date.now() - msg.createdTimestamp;
                 const ans1 = new ME()
@@ -149,8 +155,19 @@ module.exports = {
                         }
                     );
 
+                    const currencyEarned = await playGame(userID, 'math', level, operator_amount);
+
+                    const newbal = currencyEarned;
+
+                    const currencyUpRes = await currency.findOneAndUpdate(
+                        { userName: userName1 },
+                        { $set: { userID: userID }, $inc: { balance: newbal } },
+                        { upsert: true, new: true }
+                    );
+                    console.log(`The username is: ${userName1}`);
+                    console.log(`User Profile updated and added a new balance of ${newbal}`);
                     console.log('User profile updated');
-                    return userProfile;
+                    return currencyUpRes, userProfile;
                 } catch (err) {
                     console.log(err);
                 }
@@ -193,7 +210,7 @@ module.exports = {
                         console.log(err);
                     }
                 }
-                
+
             })
         })
     }

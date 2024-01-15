@@ -55,6 +55,46 @@ const mathscores = new mongoose.Schema(
             type : Number,
             unique : true,
         },
+        lvl11 : {
+            type : Number,
+            unique : true,
+        },
+        lvl12 : {
+            type : Number,
+            unique : true,
+        },
+        lvl13 : {
+            type : Number,
+            unique : true,
+        },
+        lvl14 : {
+            type : Number,
+            unique : true,
+        },
+        lvl15 : {
+            type : Number,
+            unique : true,
+        },
+        lvl16 : {
+            type : Number,
+            unique : true,
+        },
+        lvl17 : {
+            type : Number,
+            unique : true,
+        },
+        lvl18 : {
+            type : Number,
+            unique : true,
+        },
+        lvl19 : {
+            type : Number,
+            unique : true,
+        },
+        lvl20 : {
+            type : Number,
+            unique : true,
+        },
     }
 )
 
