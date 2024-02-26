@@ -1,16 +1,25 @@
 const { Client, Message, DiscordAPIError, EmbedBuilder, Embed, SlashCommandBuilder } = require('discord.js');
 let cd = new Set()
 const client = require('../../shiko-main');
-const config = require('../../config/shiko.json');
+const config = require('../../../cores/system/config/shiko.json');
 const ME = EmbedBuilder
 
 //importing databases
-const MS = require('../../schemas/mathscores')
-const currency = require('../../schemas/usercurrency')
+const MS = require('../../../cores/databases/mathscores')
 
 //importing functions
 const { generateEquation } = require('../../../cores/games/math/mathsystem')
-const { playGame, getBalance } = require('../../../cores/games/currency/currencysystem')
+const { playGame } = require('../../../cores/games/currency/currencysystem')
+
+//importing embeds
+const {
+    mathCreateEmbed, mathEditEmbed
+} = require('../../../cores/system/builders/embed')
+
+//importing ecosystem output
+const {
+    formattedCurrency
+} = require('../../../cores/games/currency/currencysystem')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,87 +33,66 @@ module.exports = {
             .setRequired(true)),
     async execute(interaction, message, args) {
 
-
-        const err1 = new ME()
-            .setTitle('OI')
-            .setDescription("❎ **| Hey, you still have an equation to solve! Please solve that one first before creating another equation!**")
-            .setColor(config.colors.no)
-            .setTimestamp()
-            .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
-
         if (cd.has(interaction.user.id))
-            return interaction.reply({ embeds: [err1] })
+            return mathCreateEmbed(
+                interaction,
+                'OI',
+                "❎ **| Hey, you still have an equation to solve! Please solve that one first before creating another equation!**"
+            )
 
         const level = interaction.options.getInteger('level') || 1;
 
-
-        const err2 = new ME()
-            .setTitle('OI')
-            .setDescription("❎ **| I'm sorry, that's an invalid level!**")
-            .setColor(config.colors.no)
-            .setTimestamp()
-            .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
-
-        const err3 = new ME()
-            .setTitle("OI")
-            .setDescription("❎ **| I'm sorry, level range is from 1-20!**")
-            .setColor(config.colors.no)
-            .setTimestamp()
-            .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() })
-
         if (isNaN(level))
-            return interaction.reply({ embeds: [err2] })
+            return mathCreateEmbed(
+                interaction,
+                'OI',
+                "❎ **| I'm sorry, that's an invalid level!**",
+                config.colors.no
+            )
 
         if (level < 0 || level > 20)
-            return interaction.reply({ embeds: [err3] })
+            return mathCreateEmbed(
+                interaction,
+                "OI",
+                "❎ **| I'm sorry, level range is from 1-20!**",
+                config.colors.no
+            )
 
         const operator_amount = interaction.options.getInteger('operator_amount') || 1;
 
-
-        const err4 = new ME()
-            .setTitle('Aweee~')
-            .setDescription("❎ **| I'm sorry, that's an invalid operator amount!**")
-            .setColor(config.colors.no)
-            .setTimestamp()
-            .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
-
-        const err5 = new ME()
-            .setTitle('Aweee~')
-            .setDescription("❎ **| I'm sorry, operator amount range is from 1-10!**")
-            .setColor(config.colors.no)
-            .setTimestamp()
-            .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
-
         if (isNaN(operator_amount))
-            return interaction.reply({ embeds: [err4] })
+            return mathCreateEmbed(
+                interaction,
+                'Aweee~',
+                "❎ **| I'm sorry, that's an invalid operator amount!**",
+                config.colors.no
+            )
 
         if (operator_amount < 1 || operator_amount > 10)
-            return interaction.reply({ embeds: [err5] })
+            return mathCreateEmbed(
+                'Aweee~',
+                "❎ **| I'm sorry, operator amount range is from 1-10!**",
+                config.colors.no
+            )
 
         const val = await generateEquation(level, operator_amount);
         const equation = val[0];
 
-        const err6 = new ME()
-            .setTitle('A-')
-            .setDescription("❎ **| I'm sorry, the equation generator had problems generating your equation, please try again!**")
-            .setColor(config.colors.no)
-            .setTimestamp()
-            .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
-
         if (!equation)
-            return interaction.reply({ embeds: [err6] })
+            return mathCreateEmbed(
+                interaction,
+                'A-',
+                "❎ **| I'm sorry, the equation generator had problems generating your equation, please try again!**",
+                config.colors.options
+            )
 
         const answer = val[1];
 
-        const answerEmbed = new ME()
-            .setTitle('Answer The Question')
-            .setDescription(`❗**| ${interaction.user}, here is your equation:\n\`Operator count ${operator_amount}, level ${level}\`\n\`\`\`fix\n${equation} = ...\`\`\`You have 60 seconds to solve it.**`)
-            .setColor(config.colors.answer)
-            .setTimestamp()
-            .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
-
-        interaction.reply(
-            { embeds: [answerEmbed] }
+        return mathCreateEmbed(
+            interaction,
+            'Answer The Question',
+            `❗**| ${interaction.user}, here is your equation:\n\`Operator count ${operator_amount}, level ${level}\`\n\`\`\`fix\n${equation} = ...\`\`\`You have 60 seconds to solve it.**`,
+            'Random'
         ).then(msg => {
             cd.add(interaction.user.id);
             let collector = interaction.channel.createMessageCollector(
@@ -127,15 +115,19 @@ module.exports = {
                 const userID = interaction.user.id
                 const userName1 = interaction.user.username
 
-                const timeDiff = Date.now() - msg.createdTimestamp;
-                const ans1 = new ME()
-                    .setTitle('Yey you got the answer~')
-                    .setDescription(`✅ **| ${interaction.user}, your answer is correct! It took you ${timeDiff / 1000}s!\n\`\`\`fix\n${equation} = ${answer}\`\`\`**`)
-                    .setColor(config.colors.correct)
-                    .setTimestamp()
-                    .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
+                const timeDiff = Date.now() - interaction.createdTimestamp;
 
-                interaction.editReply({ embeds: [ans1] })
+                const result = await playGame(interaction, userName1, userID, 'math', level, operator_amount);
+
+                await mathEditEmbed(interaction, {
+                    title: 'Yey you got the answer~',
+                    description: `✅ **| ${interaction.user}, your answer is correct! It took you ${timeDiff / 1000}s!\n\`\`\`fix\n${equation} = ${answer}\`\`\`**`,
+                    colors: config.colors.correct,
+                    fields: [{ name: '✅ **| And you also earned a balance for : **', value: `**\`\`\`fix\n${result.formattedCurrency}\`\`\`**` }]
+                });
+
+
+                console.log('USER EARNED A MONEY OF :', result.formattedCurrency)
 
                 cd.delete(interaction.user.id);
 
@@ -155,19 +147,8 @@ module.exports = {
                         }
                     );
 
-                    const currencyEarned = await playGame(userID, 'math', level, operator_amount);
-
-                    const newbal = currencyEarned;
-
-                    const currencyUpRes = await currency.findOneAndUpdate(
-                        { userName: userName1 },
-                        { $set: { userID: userID }, $inc: { balance: newbal } },
-                        { upsert: true, new: true }
-                    );
-                    console.log(`The username is: ${userName1}`);
-                    console.log(`User Profile updated and added a new balance of ${newbal}`);
                     console.log('User profile updated');
-                    return currencyUpRes, userProfile;
+                    return userProfile;
                 } catch (err) {
                     console.log(err);
                 }
@@ -176,15 +157,13 @@ module.exports = {
             })
 
             collector.once('end', async () => {
-                const ans2 = new ME()
-                    .setTitle('Aweee Time Out~')
-                    .setDescription(`❎ **| ${interaction.user}, timed out. The correct answer is:\n\`\`\`fix\n${equation} = ${answer}\`\`\`**`)
-                    .setColor(config.colors.no)
-                    .setTimestamp()
-                    .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
 
                 if (!correct) {
-                    interaction.followUp({ embeds: [ans2] })
+                    mathEditEmbed(
+                        'Aweee Time Out~',
+                        `❎ **| ${interaction.user}, timed out. The correct answer is:\n\`\`\`fix\n${equation} = ${answer}\`\`\`**`,
+                        config.colors.no
+                    )
                     cd.delete(interaction.user.id);
 
                     const level = interaction.options.getInteger('level');

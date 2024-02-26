@@ -2,7 +2,7 @@ const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Embed
 let cd = new Set()
 const { MongoClient } = require('mongodb');
 const client = require('../../shiko-main')
-const TS = require('../../schemas/scores')
+const TS = require('../../../cores/databases/scores')
 
 const ME = EmbedBuilder
 

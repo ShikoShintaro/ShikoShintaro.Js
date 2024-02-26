@@ -1,7 +1,7 @@
 const { EmbedBuilder, SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 const client = require('../../shiko-main');
-const MS = require('../../schemas/mathscores')
-const TS = require('../../schemas/scores')
+const MS = require('../../../cores/databases/mathscores')
+const TS = require('../../../cores/databases/scores')
 const ME = EmbedBuilder;
 
 const Canva = require('@napi-rs/canvas');
@@ -205,7 +205,7 @@ module.exports = {
 
                         // Customize styling for levels that haven't been answered
                         if (levelValue === 'Not answered') {
-                            ctx.fillStyle = '#999999'; // Gray color for unanswered levels
+                            ctx.fillStyle = '#ffffff'; // Gray color for unanswered levels
                         }
 
                         // Draw the level information
@@ -251,11 +251,21 @@ module.exports = {
                             await mathLevelText(ctx, '3', '20px', 'Arial', 350, 425, usr);
                             await mathLevelText(ctx, '4', '20px', 'Arail', 350, 475, usr);
                             await mathLevelText(ctx, '5', '20px', 'Arail', 350, 525, usr);
-                            await mathLevelText(ctx, '6', '20px', 'Arail', 990, 325, usr);
-                            await mathLevelText(ctx, '7', '20px', 'Arail', 990, 375, usr);
-                            await mathLevelText(ctx, '8', '20px', 'Arail', 990, 425, usr);
-                            await mathLevelText(ctx, '9', '20px', 'Arail', 990, 475, usr);
-                            await mathLevelText(ctx, '10', '20px', 'Arail', 990, 525, usr);
+                            await mathLevelText(ctx, '6', '20px', 'Arail', 700, 325, usr);
+                            await mathLevelText(ctx, '7', '20px', 'Arail', 700, 375, usr);
+                            await mathLevelText(ctx, '8', '20px', 'Arail', 700, 425, usr);
+                            await mathLevelText(ctx, '9', '20px', 'Arail', 700, 475, usr);
+                            await mathLevelText(ctx, '10', '20px', 'Arail', 700, 525, usr);
+                            await mathLevelText(ctx, '11', '20px', 'Arail', 1050, 325, usr);
+                            await mathLevelText(ctx, '12', '20px', 'Arail', 1050, 375, usr);
+                            await mathLevelText(ctx, '13', '20px', 'Arail', 1050, 425, usr);
+                            await mathLevelText(ctx, '14', '20px', 'Arail', 1050, 475, usr);
+                            await mathLevelText(ctx, '15', '20px', 'Arail', 1050, 525, usr);
+                            await mathLevelText(ctx, '16', '20px', 'Arail', 1400, 325, usr);
+                            await mathLevelText(ctx, '17', '20px', 'Arail', 1400, 375, usr);
+                            await mathLevelText(ctx, '18', '20px', 'Arail', 1400, 425, usr);
+                            await mathLevelText(ctx, '19', '20px', 'Arail', 1400, 475, usr);
+                            await mathLevelText(ctx, '20', '20px', 'Arail', 1400, 525, usr);
                             // Add more level mentions as needed
                         }
                     }
