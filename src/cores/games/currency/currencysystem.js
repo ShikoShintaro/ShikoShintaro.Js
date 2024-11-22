@@ -4,6 +4,10 @@ const config = require('../../system/config/shiko.json');
 
 const users = {};
 
+<<<<<<< HEAD
+=======
+//Math Currency System
+>>>>>>> 6637085 (First Major Updates)
 async function playGame(interaction, userName1, userID, gameType, level, operator_amount) {
     return new Promise(async (resolve, reject) => {
         if (!users[userID]) users[userID] = { currency: 0 };
@@ -41,9 +45,15 @@ async function playGame(interaction, userName1, userID, gameType, level, operato
 
         console.log(`The username is: ${userName1}`);
         console.log(`User Profile updated and added a new balance of ${formattedCurrency}`);
+<<<<<<< HEAD
         
 
         resolve (
+=======
+
+
+        resolve(
+>>>>>>> 6637085 (First Major Updates)
             {
                 currencyUpRes,
                 formattedCurrency
@@ -51,7 +61,63 @@ async function playGame(interaction, userName1, userID, gameType, level, operato
         )
     })
 }
+<<<<<<< HEAD
 
 module.exports = {
     playGame,
+=======
+//MATH GAME END
+
+//BlackJack System START
+async function deductBet(userID, betAmount) {
+    const user = await usercurrency.findOne({ userID });
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    console.log(`User Balance: ${user.balance}, Bet Amount: ${betAmount}`);
+
+    if (user.balance < betAmount) {
+        throw new Error('Insufficient Balance');
+    }
+
+    user.balance -= betAmount; // Deduct the bet amount
+    await user.save();
+    return user.balance;
+}
+
+async function awardWinnings(userID, winningAmount) {
+    const user = await usercurrency.findOne({ userID });
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    user.balance += winningAmount; // Award the winnings
+    await user.save();
+    return user.balance;
+}
+
+async function returnBet(userID, betAmount) {
+    const user = await usercurrency.findOne({ userID });
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    user.balance == betAmount; // Return the bet if necessary
+    await user.save();
+    return user.balance;
+}
+
+//BlackJack System END
+
+
+module.exports = {
+    playGame,
+    deductBet,
+    awardWinnings,
+    returnBet,
+>>>>>>> 6637085 (First Major Updates)
 }

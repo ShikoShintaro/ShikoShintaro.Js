@@ -1,7 +1,12 @@
 {
     "colors": {
+<<<<<<< HEAD
         "yes": "#0bfc00",
         "no": "#ff0000",
+=======
+        "yes": "#0BFC00",
+        "no": "#FF0000",
+>>>>>>> 6637085 (First Major Updates)
         "join": "#00f1ff",
         "leave": "#0058ff",
         "answer": "#0af2ff",
