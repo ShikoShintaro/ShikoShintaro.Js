@@ -4,10 +4,7 @@ const config = require('../../system/config/shiko.json');
 
 const users = {};
 
-<<<<<<< HEAD
-=======
 //Math Currency System
->>>>>>> 6637085 (First Major Updates)
 async function playGame(interaction, userName1, userID, gameType, level, operator_amount) {
     return new Promise(async (resolve, reject) => {
         if (!users[userID]) users[userID] = { currency: 0 };
@@ -45,15 +42,9 @@ async function playGame(interaction, userName1, userID, gameType, level, operato
 
         console.log(`The username is: ${userName1}`);
         console.log(`User Profile updated and added a new balance of ${formattedCurrency}`);
-<<<<<<< HEAD
-        
-
-        resolve (
-=======
 
 
         resolve(
->>>>>>> 6637085 (First Major Updates)
             {
                 currencyUpRes,
                 formattedCurrency
@@ -61,11 +52,6 @@ async function playGame(interaction, userName1, userID, gameType, level, operato
         )
     })
 }
-<<<<<<< HEAD
-
-module.exports = {
-    playGame,
-=======
 //MATH GAME END
 
 //BlackJack System START
@@ -119,5 +105,4 @@ module.exports = {
     deductBet,
     awardWinnings,
     returnBet,
->>>>>>> 6637085 (First Major Updates)
 }

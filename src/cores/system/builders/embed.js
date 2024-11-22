@@ -9,10 +9,6 @@ const MS = require('../../../cores/databases/mathscores');
 const TS = require('../../../cores/databases/scores');
 const currency = require('../../../cores/databases/usercurrency');
 
-<<<<<<< HEAD
-const ME = EmbedBuilder;
-
-=======
 const {
     deductBet, awardWinnings, returnBet
 } = require('../../../cores/games/currency/currencysystem');
@@ -25,34 +21,10 @@ const {
     iniDeck, shuffleDeck, calculateHandVal
 } = require('../../../cores/games/gamble/blackjacksystem')
 
->>>>>>> 6637085 (First Major Updates)
 async function balembed(interaction, user) {
 
     const userID = user.id;
 
-<<<<<<< HEAD
-    const usr = await currency.findOne({ userID });
-
-    if (usr) {
-        const userbal = usr.balance.toLocaleString();
-
-        try {
-            const embed = new ME()
-                .setTitle('User Balance')
-                .setDescription(`**${interaction.user}'s Current Balance : \n\`\`\`fix\n${userbal}\`\`\`**`)
-                .setColor('Random')
-                .setTimestamp()
-                .setFooter({ text: client.user.username, iconURL: client.user.displayAvatarURL() });
-
-            interaction.reply({ embeds: [embed] })
-
-        } catch (err) {
-            console.error(err);
-            interaction.reply(`There was an error getting the user's balance`);
-        }
-    } else {
-        console.log('Sorry there was an error');
-=======
     try {
         const usr = await currency.findOne({ userID });
 
@@ -79,7 +51,6 @@ async function balembed(interaction, user) {
     } catch (err) {
         console.error(err);
         await interaction.reply(`There was an error retrieving the user's balance.`);
->>>>>>> 6637085 (First Major Updates)
     }
 }
 
@@ -107,8 +78,6 @@ async function mathEditEmbed(interaction, { title = '', description = '', colors
     await interaction.editReply({ embeds: [embed] });
 }
 
-<<<<<<< HEAD
-=======
 //BLACK JACK
 async function BJEmbed(interaction, betAmount, playerHand, dealerHand) {
     const embed = new ME()
@@ -237,19 +206,14 @@ async function createFinalEmbed(interaction, playerHand, dealerHand, playerValue
     }
 }
 
->>>>>>> 6637085 (First Major Updates)
 
 
 module.exports = {
     balembed,
     mathCreateEmbed,
-<<<<<<< HEAD
-    mathEditEmbed
-=======
     mathEditEmbed,
     BJEmbed,
     hitEmbed,
     standEmbed,
     createFinalEmbed
->>>>>>> 6637085 (First Major Updates)
 }

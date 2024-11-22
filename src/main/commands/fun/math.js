@@ -123,13 +123,9 @@ module.exports = {
                     title: 'Yey you got the answer~',
                     description: `✅ **| ${interaction.user}, your answer is correct! It took you ${timeDiff / 1000}s!\n\`\`\`fix\n${equation} = ${answer}\`\`\`**`,
                     colors: config.colors.correct,
-<<<<<<< HEAD
-                    fields: [{ name: '✅ **| And you also earned a balance for : **', value: `**\`\`\`fix\n${result.formattedCurrency}\`\`\`**` }]
-=======
                     fields: [
                         { name: `✅ **| And ${interaction.user} also earned a balance for : **`, value: `**\`\`\`fix\n${result.formattedCurrency}\`\`\`**` }
                     ]
->>>>>>> 6637085 (First Major Updates)
                 });
 
 
@@ -165,20 +161,12 @@ module.exports = {
             collector.once('end', async () => {
 
                 if (!correct) {
-<<<<<<< HEAD
-                    mathEditEmbed(
-                        'Aweee Time Out~',
-                        `❎ **| ${interaction.user}, timed out. The correct answer is:\n\`\`\`fix\n${equation} = ${answer}\`\`\`**`,
-                        config.colors.no
-                    )
-=======
                     mathEditEmbed(interaction, {
                         title : 'Aweee Time Out~',
                         description : `❎ **| ${interaction.user}, timed out. The correct answer is:\n\`\`\`fix\n${equation} = ${answer}\`\`\`**`,
                         colors : config.colors.no,
                         fields: [{ name: '❎ **| You will not get a reward bec the timer ran out : **', value: `**\`\`\`fix\n0\`\`\`**` }]
                     })
->>>>>>> 6637085 (First Major Updates)
                     cd.delete(interaction.user.id);
 
                     const level = interaction.options.getInteger('level');

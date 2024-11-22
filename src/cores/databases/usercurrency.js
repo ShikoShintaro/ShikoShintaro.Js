@@ -14,11 +14,7 @@ const curr = new mongoose.Schema(
         },
         balance: {
             type: Number,
-<<<<<<< HEAD
-            unique: true,
-=======
             default: 0,
->>>>>>> 6637085 (First Major Updates)
         },
     }
 );
