@@ -1,7 +1,5 @@
 const usercurrency = require('../../../cores/databases/usercurrency');
-const { mathEditEmbed } = require('../../system/builders/embed');
 const config = require('../../system/config/shiko.json');
-
 const users = {};
 
 //Math Currency System
