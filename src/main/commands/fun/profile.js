@@ -1,8 +1,10 @@
 const { EmbedBuilder, SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
 const client = require('../../shiko-main');
-const MS = require('../../../cores/databases/mathscores')
-const TS = require('../../../cores/databases/scores')
+const MS = require('../../../cores/databases/mathscores');
+const TS = require('../../../cores/databases/scores');
 const ME = EmbedBuilder;
+
+const renderText = require('../../../cores/system/builders/rendertext');
 
 const Canva = require('@napi-rs/canvas');
 const path = require('path');
@@ -192,27 +194,27 @@ module.exports = {
 
                     async function mathText(ctx, text, fontSize, fontFamily, x, y) {
                         ctx.font = `${fontSize} ${fontFamily}`;
-                        ctx.fillStyle = '#ffffff';
+                        ctx.fillStyle = '#000000';
                         ctx.fillText(text, x, y);
                     }
 
                     async function mathLevelText(ctx, level, fontSize, fontFamily, x, y, usr) {
                         ctx.font = `${fontSize} ${fontFamily}`;
-                        ctx.fillStyle = '#ffffff'; // Default color
+                        ctx.fillStyle = '#000000'; // Default color = Black
 
                         const levelKey = `lvl${level}`;
                         const levelValue = usr && usr[levelKey] !== undefined ? usr[levelKey] : 'Not answered';
 
                         // Customize styling for levels that haven't been answered
                         if (levelValue === 'Not answered') {
-                            ctx.fillStyle = '#ffffff'; // Gray color for unanswered levels
+                            ctx.fillStyle = '#000000'; // Gray color for unanswered levels
                         }
 
                         // Draw the level information
                         ctx.fillText(`Level ${level} : ${levelValue}`, x, y);
 
                         // Reset fill style to default after drawing each level
-                        ctx.fillStyle = '#ffffff';
+                        ctx.fillStyle = '#000000';
                     }
 
                     // Math size profile
@@ -223,7 +225,12 @@ module.exports = {
                     const font2 = '30px';
                     const font3 = '25px';
 
-                    await mathText(ctx, `${user?.username}`, fontSize, style, 290, 170);
+                    const displayName = user.displayName;
+                    const defaultFont = "Arial";
+
+                    await renderText(ctx, displayName, fontSize, defaultFont, 290, 170)
+
+                    // await mathText(ctx, `${user.username}`, fontSize, style, 290, 170);
 
                     await mathText(ctx, 'Math Game Profile', font1, style, 320, 225);
 
@@ -244,28 +251,30 @@ module.exports = {
 
                         }
 
+                        const litra = "Helvetica";
+
                         // Check if usr is defined before using it
                         if (usr) {
-                            await mathLevelText(ctx, '1', '20px', 'Arial', 350, 325, usr);
-                            await mathLevelText(ctx, '2', '20px', 'Arial', 350, 375, usr);
-                            await mathLevelText(ctx, '3', '20px', 'Arial', 350, 425, usr);
-                            await mathLevelText(ctx, '4', '20px', 'Arail', 350, 475, usr);
-                            await mathLevelText(ctx, '5', '20px', 'Arail', 350, 525, usr);
-                            await mathLevelText(ctx, '6', '20px', 'Arail', 700, 325, usr);
-                            await mathLevelText(ctx, '7', '20px', 'Arail', 700, 375, usr);
-                            await mathLevelText(ctx, '8', '20px', 'Arail', 700, 425, usr);
-                            await mathLevelText(ctx, '9', '20px', 'Arail', 700, 475, usr);
-                            await mathLevelText(ctx, '10', '20px', 'Arail', 700, 525, usr);
-                            await mathLevelText(ctx, '11', '20px', 'Arail', 1050, 325, usr);
-                            await mathLevelText(ctx, '12', '20px', 'Arail', 1050, 375, usr);
-                            await mathLevelText(ctx, '13', '20px', 'Arail', 1050, 425, usr);
-                            await mathLevelText(ctx, '14', '20px', 'Arail', 1050, 475, usr);
-                            await mathLevelText(ctx, '15', '20px', 'Arail', 1050, 525, usr);
-                            await mathLevelText(ctx, '16', '20px', 'Arail', 1400, 325, usr);
-                            await mathLevelText(ctx, '17', '20px', 'Arail', 1400, 375, usr);
-                            await mathLevelText(ctx, '18', '20px', 'Arail', 1400, 425, usr);
-                            await mathLevelText(ctx, '19', '20px', 'Arail', 1400, 475, usr);
-                            await mathLevelText(ctx, '20', '20px', 'Arail', 1400, 525, usr);
+                            await mathLevelText(ctx, '1', '20px', litra, 350, 325, usr);
+                            await mathLevelText(ctx, '2', '20px', litra, 350, 375, usr);
+                            await mathLevelText(ctx, '3', '20px', litra, 350, 425, usr);
+                            await mathLevelText(ctx, '4', '20px', litra, 350, 475, usr);
+                            await mathLevelText(ctx, '5', '20px', litra, 350, 525, usr);
+                            await mathLevelText(ctx, '6', '20px', litra, 700, 325, usr);
+                            await mathLevelText(ctx, '7', '20px', litra, 700, 375, usr);
+                            await mathLevelText(ctx, '8', '20px', litra, 700, 425, usr);
+                            await mathLevelText(ctx, '9', '20px', litra, 700, 475, usr);
+                            await mathLevelText(ctx, '10', '20px', litra, 700, 525, usr);
+                            await mathLevelText(ctx, '11', '20px', litra, 1050, 325, usr);
+                            await mathLevelText(ctx, '12', '20px', litra, 1050, 375, usr);
+                            await mathLevelText(ctx, '13', '20px', litra, 1050, 425, usr);
+                            await mathLevelText(ctx, '14', '20px', litra, 1050, 475, usr);
+                            await mathLevelText(ctx, '15', '20px', litra, 1050, 525, usr);
+                            await mathLevelText(ctx, '16', '20px', litra, 1400, 325, usr);
+                            await mathLevelText(ctx, '17', '20px', litra, 1400, 375, usr);
+                            await mathLevelText(ctx, '18', '20px', litra, 1400, 425, usr);
+                            await mathLevelText(ctx, '19', '20px', litra, 1400, 475, usr);
+                            await mathLevelText(ctx, '20', '20px', litra, 1400, 525, usr);
                             // Add more level mentions as needed
                         }
                     }
