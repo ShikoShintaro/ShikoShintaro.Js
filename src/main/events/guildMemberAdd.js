@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const banners = require('../../cores/system/builders/banners.js');
+const banners = require('../../cores/system/builders/welcomebanner.js');
 
 module.exports = {
     name: Events.GuildMemberAdd,
